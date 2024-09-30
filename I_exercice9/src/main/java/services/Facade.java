@@ -23,4 +23,8 @@ public class Facade {
         return ((pwd!=null) && (pwd.equals(password)));
    }
 
+   public void resetPassword(String login,String password) {
+        users.put(login,password);
+   }
+
 }

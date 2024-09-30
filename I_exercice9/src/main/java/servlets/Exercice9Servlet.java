@@ -46,9 +46,30 @@ public class Exercice9Servlet extends HttpServlet {
                     break;
                 case "SimpleCheck":
                     simpleCheck(request,response);
+                    break;
+                case "ChangePassword" :
+                    request.getRequestDispatcher("WEB-INF/password.jsp").forward(request,response);
+                    break;
+                case "ResetPassword" :
+                    resetPassword(request,response);
+                    break;
             }
         }
 
+    }
+
+    private void resetPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String password=request.getParameter("password");
+        String passwordConfirmation=request.getParameter("password_confirmation");
+        if(password.equals(passwordConfirmation)) {
+            String login = request.getSession().getAttribute("courant").toString();
+            facade.resetPassword(login,password);
+            request.setAttribute("message","Le mot de passe a été mis à jour avec succès!");
+            request.getRequestDispatcher("WEB-INF/welcome.jsp").forward(request,response);
+        } else {
+            request.setAttribute("error","Le mot de passe et sa confirmation ne sont pas identique");
+            request.getRequestDispatcher("/WEB-INF/password.jsp").forward(request,response);
+        }
     }
 
 
